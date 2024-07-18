@@ -81,6 +81,17 @@ def login(db: Session = Depends(get_db), form_data: OAuth2PasswordRequestForm = 
         )
     return {"message": "Login successful"}
 
+@app.get("/users/{user_id}", response_model=UserResponseSchema)
+def show_user(user_id: int, db: Session = Depends(get_db)):
+    try:
+        user = db.query(User).filter(User.id == user_id).first()
+        if user is None:
+            raise HTTPException(status_code=404, detail="User not found")
+        return user
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 
 
 
