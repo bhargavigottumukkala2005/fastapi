@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 import logging
 from blogs import router as blogs_router
+from authentication import router as auth_router
 from users import router as users_router
 
 app = FastAPI()
@@ -15,7 +16,8 @@ async def exception_handler(request, exc):
     )
 
 app.include_router(blogs_router, prefix="/blog", tags=["Blogs"])
-app.include_router(users_router, prefix="/user", tags=["Users", "Authentication"])
+app.include_router(auth_router, prefix="/auth", tags=["Authentication"])
+app.include_router(users_router, prefix="/users", tags=["Users"])
 
 if __name__ == "__main__":
     import uvicorn

@@ -1,12 +1,12 @@
 from pydantic import BaseModel
 
-class BlogSchema(BaseModel):
-    title: str
-    body: str
-    user_id: int
+class LoginSchema(BaseModel):
+    username: str
+    password: str
 
-    class Config:
-        from_attributes = True
+class TokenSchema(BaseModel):
+    access_token: str
+    token_type: str
 
 class UserResponseSchema(BaseModel):
     id: int
@@ -16,10 +16,19 @@ class UserResponseSchema(BaseModel):
     class Config:
         from_attributes = True
 
+class BlogSchema(BaseModel):
+    title: str
+    body: str
+    user_id: int
+
+    class Config:
+        from_attributes = True
+
 class BlogResponseSchema(BaseModel):
     id: int
     title: str
     body: str
+    user_id: int
 
     class Config:
         from_attributes = True
@@ -28,7 +37,7 @@ class BlogResponseWithUserSchema(BaseModel):
     id: int
     title: str
     body: str
-    user: UserResponseSchema  # Include user details in the response
+    user: UserResponseSchema
 
     class Config:
         from_attributes = True
@@ -40,7 +49,3 @@ class UserCreateSchema(BaseModel):
 
     class Config:
         from_attributes = True
-
-class TokenSchema(BaseModel):
-    access_token: str
-    token_type: str

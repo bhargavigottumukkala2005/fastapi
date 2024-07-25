@@ -1,17 +1,13 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
-from fastapi.security import OAuth2PasswordRequestForm
-from datetime import timedelta
-
-from schemas import UserCreateSchema, UserResponseSchema, TokenSchema
+from schemas import UserCreateSchema, UserResponseSchema
 from model import User
 from database import get_db
-from hashing import hash_password, verify_password
-from jwt_token import create_access_token  # Updated import
+from hashing import hash_password
 
 router = APIRouter()
 
-@router.post("/", response_model=UserResponseSchema)
+@router.post("/", response_model=UserResponseSchema, tags=["Users"])
 def create_user(request: UserCreateSchema, db: Session = Depends(get_db)):
     try:
         hashed_password = hash_password(request.password)
@@ -23,29 +19,22 @@ def create_user(request: UserCreateSchema, db: Session = Depends(get_db)):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-@router.get("/{id}", response_model=UserResponseSchema)
+@router.get("/", response_model=list[UserResponseSchema], tags=["Users"])
+def get_users(db: Session = Depends(get_db)):
+    try:
+        users = db.query(User).all()
+        return users
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@router.get("/{id}", response_model=UserResponseSchema, tags=["Users"])
 def show_user(id: int, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.id == id).first()
     if user is None:
         raise HTTPException(status_code=404, detail="User not found")
     return user
 
-@router.post("/login", response_model=TokenSchema, tags=["Authentication"])
-def login(db: Session = Depends(get_db), form_data: OAuth2PasswordRequestForm = Depends()):
-    user = db.query(User).filter(User.email == form_data.username).first()
-    if not user or not verify_password(form_data.password, user.password):
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid username or password",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
-    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-    access_token = create_access_token(
-        data={"sub": str(user.id)}, expires_delta=access_token_expires
-    )
-    return {"access_token": access_token, "token_type": "bearer"}
-
-@router.put("/{id}", response_model=UserResponseSchema)
+@router.put("/{id}", response_model=UserResponseSchema, tags=["Users"])
 def update_user(id: int, request: UserCreateSchema, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.id == id).first()
     if user is None:
@@ -57,7 +46,7 @@ def update_user(id: int, request: UserCreateSchema, db: Session = Depends(get_db
     db.refresh(user)
     return user
 
-@router.delete("/{id}", response_model=UserResponseSchema)
+@router.delete("/{id}", response_model=UserResponseSchema, tags=["Users"])
 def delete_user(id: int, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.id == id).first()
     if user is None:
@@ -65,6 +54,3 @@ def delete_user(id: int, db: Session = Depends(get_db)):
     db.delete(user)
     db.commit()
     return user
-
-
-
