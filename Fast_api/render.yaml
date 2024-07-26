@@ -1,9 +1,12 @@
+bun:
+  version: 0.1.12
+
 services:
   - type: web
     name: zoom-flask-app
     env: python
     buildCommand: ""
-    startCommand: "python Fast_api/schedule.py"
+    startCommand: "python Fast_api/schedule.py --host 0.0.0.0 --port 3000"
     envVars:
       - key: CLIENT_ID
         value: _6KMf8b7RJuB10ydU_bKGA
