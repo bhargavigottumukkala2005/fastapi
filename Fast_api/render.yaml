@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: zoom-scheduler
+    env: python
+    buildCommand: ""
+    startCommand: "python schedule.py"
+    envVars:
+      - key: CLIENT_ID
+        value: _6KMf8b7RJuB10ydU_bKGA
+      - key: CLIENT_SECRET
+        value: HbQRz9vf3hAFeqQXD1uat2biYCTYS4gh
+    plan: free
+

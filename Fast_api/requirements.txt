@@ -8,3 +8,5 @@ python-dotenv
 bcrypt
 python-jose
 python-multipart
+flask
+requests
