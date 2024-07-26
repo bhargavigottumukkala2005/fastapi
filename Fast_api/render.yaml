@@ -1,13 +1,20 @@
 services:
   - type: web
-    name: zoom-scheduler
+    name: zoom-flask-app
     env: python
     buildCommand: ""
-    startCommand: "python schedule.py"
+    startCommand: "python Fast_api/schedule.py"
     envVars:
       - key: CLIENT_ID
         value: _6KMf8b7RJuB10ydU_bKGA
       - key: CLIENT_SECRET
         value: HbQRz9vf3hAFeqQXD1uat2biYCTYS4gh
-    plan: free
+    requirements:
+      - type: pip
+        name: requirements
+        path: Fast_api/requirements.txt
+    repo: https://github.com/bhargavigottumukkala2005/fastapi
+    branch: main
+    autoDeploy: true
+
 
