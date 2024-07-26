@@ -1,0 +1,24 @@
+{
+    "version": 2,
+    "builds": [
+      {
+        "src": "Fast_api/schedule.py",
+        "use": "@vercel/python"
+      },
+      {
+        "src": "Fast_api/requirements.txt",
+        "use": "@vercel/python"
+      }
+    ],
+    "routes": [
+      {
+        "src": "/(.*)",
+        "dest": "Fast_api/schedule.py"
+      }
+    ],
+    "env": {
+      "CLIENT_ID": "_6KMf8b7RJuB10ydU_bKGA",
+      "CLIENT_SECRET": "HbQRz9vf3hAFeqQXD1uat2biYCTYS4gh"
+    }
+  }
+  
