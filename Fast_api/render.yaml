@@ -12,7 +12,7 @@ services:
     requirements:
       - type: pip
         name: requirements
-        path: Fast_api/requirements.txt
+        path: requirements.txt
     repo: https://github.com/bhargavigottumukkala2005/fastapi
     branch: main
     autoDeploy: true
