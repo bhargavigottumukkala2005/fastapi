@@ -1,7 +1,7 @@
+import os
 import requests
 import json
 import base64
-import os
 import logging
 from flask import Flask, request, redirect, jsonify
 
@@ -148,4 +148,4 @@ def refresh_token():
         return "No refresh token found."
 
 if __name__ == "__main__":
-    app.run(debug=True, port=3000)
+    app.run(debug=True, port=10000)
